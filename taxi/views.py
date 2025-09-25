@@ -24,14 +24,18 @@ class ManufacturerListView(ListView):
 
 class CarListView(ListView):
     model = Car
-    queryset = Car.objects.select_related("manufacturer").all()
+    queryset = Car.objects.select_related("manufacturer")
     ordering = ["id"]
     paginate_by = 5
 
 
 class CarDetailView(DetailView):
     model = Car
-    queryset = Car.objects.select_related("manufacturer").prefetch_related("drivers")
+    queryset = (
+        Car.objects
+        .select_related("manufacturer")
+        .prefetch_related("drivers")
+    )
 
 
 class DriverListView(ListView):
@@ -42,4 +46,9 @@ class DriverListView(ListView):
 
 class DriverDetailView(DetailView):
     model = Driver
-    queryset = Driver.objects.prefetch_related("cars__manufacturer").all()
+    queryset = (
+        Driver.objects
+        .prefetch_related("cars__manufacturer")
+        .all()
+    )
+
